@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПолинаАкулинина.Ру - Загадки</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2575fc;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #6a11cb;
+            margin-bottom: 20px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            height: 12px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .riddle-container {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .riddle-container.correct {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .riddle-question {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .answer-input:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+        
+        .answer-input.correct {
+            border-color: #4caf50;
+            background-color: #f1f8e9;
+        }
+        
+        .feedback {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
+        
+        .correct-feedback {
+            color: #4caf50;
+            font-weight: 500;
+        }
+        
+        .incorrect-feedback {
+            color: #f44336;
+        }
+        
+        .check-button {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        .check-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .check-button:active {
+            transform: translateY(0);
+        }
+        
+        .result-container {
+            text-align: center;
+            margin-top: 40px;
+            display: none;
+        }
+        
+        .prize-image {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            margin: 20px 0;
+        }
+        
+        .congratulations {
+            font-size: 1.8rem;
+            color: #6a11cb;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+        
+        .reset-button {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .riddle-question {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ПолинаАкулинина.Ру</h1>
+            <div class="subtitle">Отгадайте пять загадок и получите награду!</div>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="riddle-container" id="riddle1">
+            <div class="riddle-question">1. Что нужно делать, когда видишь зелёного человечка?</div>
+            <input type="text" class="answer-input" id="answer1" placeholder="Введите ваш ответ...">
+            <div class="feedback" id="feedback1"></div>
+            <button class="check-button" onclick="checkAnswer(1)">Проверить</button>
+        </div>
+        
+        <div class="riddle-container" id="riddle2">
+            <div class="riddle-question">2. Чем кончаются как день, так и ночь?</div>
+            <input type="text" class="answer-input" id="answer2" placeholder="Введите ваш ответ...">
+            <div class="feedback" id="feedback2"></div>
+            <button class="check-button" onclick="checkAnswer(2)">Проверить</button>
+        </div>
+        
+        <div class="riddle-container" id="riddle3">
+            <div class="riddle-question">3. На какой вопрос нельзя ответить «Да» и не солгать?</div>
+            <input type="text" class="answer-input" id="answer3" placeholder="Введите ваш ответ...">
+            <div class="feedback" id="feedback3"></div>
+            <button class="check-button" onclick="checkAnswer(3)">Проверить</button>
+        </div>
+        
+        <div class="riddle-container" id="riddle4">
+            <div class="riddle-question">4. Если пять кошек ловят пять мышей за пять минут, сколько времени нужно одной кошке, чтобы поймать одну мышку?</div>
+            <input type="text" class="answer-input" id="answer4" placeholder="Введите ваш ответ...">
+            <div class="feedback" id="feedback4"></div>
+            <button class="check-button" onclick="checkAnswer(4)">Проверить</button>
+        </div>
+        
+        <div class="riddle-container" id="riddle5">
+            <div class="riddle-question">5. Если жёлтый мячик бросить в Чёрное море, каким он будет?</div>
+            <input type="text" class="answer-input" id="answer5" placeholder="Введите ваш ответ...">
+            <div class="feedback" id="feedback5"></div>
+            <button class="check-button" onclick="checkAnswer(5)">Проверить</button>
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <div class="congratulations">Поздравляем! Вы отгадали все загадки!</div>
+            <div>Ваша награда:</div>
+            
+            <div>
+                <button class="reset-button" onclick="resetGame()">Начать заново</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2023 ПолинаАкулинина.Ру
+    </footer>
+
+    <script>
+        // Правильные ответы
+        const correctAnswers = {
+            1: "перейти дорогу",
+            2: "мягким знаком",
+            3: "ты спишь?",
+            4: "5 минут",
+            5: "мокрым"
+        };
+        
+        let correctCount = 0;
+        
+        function checkAnswer(riddleNumber) {
+            const userAnswer = document.getElementById(`answer${riddleNumber}`).value.trim().toLowerCase();
+            const feedback = document.getElementById(`feedback${riddleNumber}`);
+            const riddleContainer = document.getElementById(`riddle${riddleNumber}`);
+            const answerInput = document.getElementById(`answer${riddleNumber}`);
+            
+            if (userAnswer === correctAnswers[riddleNumber]) {
+                feedback.innerHTML = '<span class="correct-feedback">✓ Правильно! Молодец!</span>';
+                riddleContainer.classList.add('correct');
+                answerInput.classList.add('correct');
+                
+                if (!riddleContainer.dataset.counted) {
+                    correctCount++;
+                    riddleContainer.dataset.counted = true;
+                    updateProgress();
+                }
+                
+                // Если все загадки отгаданы, показываем результат
+                if (correctCount === 5) {
+                    showResult();
+                }
+            } else {
+                feedback.innerHTML = '<span class="incorrect-feedback">✗ Неправильно, попробуйте еще раз!</span>';
+            }
+        }
+        
+        function updateProgress() {
+            const progress = (correctCount / 5) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+        
+        function showResult() {
+            document.getElementById('resultContainer').style.display = 'block';
+            
+            // Прокручиваем страницу к результату
+            document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function resetGame() {
+            // Сбрасываем все ответы и состояния
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`answer${i}`).value = '';
+                document.getElementById(`feedback${i}`).innerHTML = '';
+                document.getElementById(`riddle${i}`).classList.remove('correct');
+                document.getElementById(`answer${i}`).classList.remove('correct');
+                delete document.getElementById(`riddle${i}`).dataset.counted;
+            }
+            
+            correctCount = 0;
+            updateProgress();
+            document.getElementById('resultContainer').style.display = 'none';
+            
+            // Прокручиваем страницу к началу
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Добавляем обработчик нажатия Enter для полей ввода
+        document.querySelectorAll('.answer-input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const riddleNumber = this.id.replace('answer', '');
+                    checkAnswer(riddleNumber);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
